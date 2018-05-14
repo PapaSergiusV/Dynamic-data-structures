@@ -48,10 +48,7 @@ namespace TextStatistics
             
             foreach (var x in text.Split(' '))
             {
-                if (this.Contains(x))
-                    this._CountUp(x);
-                else
-                    this.AddWord(x);
+                this.AddWord(x);
             }
         }
 
@@ -110,33 +107,6 @@ namespace TextStatistics
         }
 
         /// <summary>
-        /// Увеличение счетчика кол-ва повторений слова в тексте
-        /// </summary>
-        /// <param name="str"></param>
-        private void _CountUp(string str)
-        {
-            this._CountUpRecur(ref this._mainTree, str);
-        }
-
-        /// <summary>
-        /// Рекурсивная вспомогательная функция функции _CountUp
-        /// </summary>
-        /// <param name="root">Ссылка на корень дерева</param>
-        /// <param name="x">Слово</param>
-        private void _CountUpRecur(ref TreeNode<CntString> root, string x)
-        {
-            if (root == null)
-                return;
-            if (x == root.data.s)
-                root.data.count++;
-            else
-            {
-                this._CountUpRecur(ref root.left, x);
-                this._CountUpRecur(ref root.right, x);
-            }
-        }
-
-        /// <summary>
         /// Добавление слова в БДП статистики слов
         /// </summary>
         /// <param name="str">Слово</param>
@@ -156,7 +126,10 @@ namespace TextStatistics
                 root = new TreeNode<CntString>(new CntString(x, 1));
             else
             {
-                if (x.CompareTo(root.data.s) < 0)
+                var compare = x.CompareTo(root.data.s);
+                if (compare == 0)
+                    root.data.count++;
+                else if (compare < 0)
                 {
                     if (root.left == null)
                         root.left = new TreeNode<CntString>(new CntString(x, 1));
