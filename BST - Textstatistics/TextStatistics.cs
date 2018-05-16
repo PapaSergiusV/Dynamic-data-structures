@@ -47,9 +47,7 @@ namespace TextStatistics
             this._mainTree = null;
             
             foreach (var x in text.Split(' '))
-            {
                 this.AddWord(x);
-            }
         }
 
         /// <summary>
@@ -103,7 +101,9 @@ namespace TextStatistics
                 return false;
             if (x == root.data.s)
                 return true;
-            return (this._ContainsWord(root.left, x) || this._ContainsWord(root.right, x));
+            if (x.CompareTo(root.data.s) < 0)
+                return this._ContainsWord(root.left, x);
+            return this._ContainsWord(root.right, x);
         }
 
         /// <summary>
